@@ -1,0 +1,16 @@
+<table>
+    <thead>
+        <tr>
+            <th>제목</th>
+            <th>작성일시</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="post, index : ${postList}">
+			<td>
+				<a th:href="@{|/post/detail/${post.id}|}" th:text="${post.title}"></a>
+			</td>
+            <td th:text="${post.createDate}"></td>
+        </tr>
+    </tbody>
+</table>
