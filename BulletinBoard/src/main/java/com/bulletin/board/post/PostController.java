@@ -23,6 +23,8 @@ public class PostController {
 	
 	@GetMapping(value = "/post/detail/{id}")
     public String detail(Model model, @PathVariable("id") Integer id) {
+		Post post = this.postService.getPost(id);
+        model.addAttribute("post", post);
         return "post_detail";
     }
 }
