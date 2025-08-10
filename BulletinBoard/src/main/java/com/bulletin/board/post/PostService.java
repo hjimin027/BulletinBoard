@@ -2,6 +2,7 @@ package com.bulletin.board.post;
 
 import java.util.List;
 import java.util.Optional;
+import java.time.LocalDateTime;
 
 import com.bulletin.board.DataNotFoundException;
 
@@ -25,5 +26,13 @@ public class PostService {
         } else {
             throw new DataNotFoundException("post not found");
         }
+    }
+	
+	public void create(String title, String content) {
+        Post p = new Post();
+        p.setTitle(title);
+        p.setContent(content);
+        p.setCreateDate(LocalDateTime.now());
+        this.postRepository.save(p);
     }
 }
