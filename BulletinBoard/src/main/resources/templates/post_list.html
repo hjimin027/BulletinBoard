@@ -10,9 +10,12 @@
 	    </thead>
 	    <tbody>
 	        <tr th:each="post, loop : ${paging}">
-				<td th:text="${loop.count}"></td>
+				<td th:text="${paging.getTotalElements - (paging.number * paging.size) - loop.index}"></td>
 				<td>
 					<a th:href="@{|/post/detail/${post.id}|}" th:text="${post.title}"></a>
+					<span class="text-danger small ms-2"
+					th:if="${#lists.size(post.commentList) > 0}"
+					th:text="${#lists.size(post.commentList)}"></span>
 				</td>
 	            <td th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd HH:mm')}"></td>
 	        </tr>
