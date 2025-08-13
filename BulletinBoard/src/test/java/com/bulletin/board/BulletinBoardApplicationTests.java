@@ -13,16 +13,14 @@ import com.bulletin.board.comment.Comment;
 import com.bulletin.board.comment.CommentRepository;
 import com.bulletin.board.post.Post;
 import com.bulletin.board.post.PostRepository;
+import com.bulletin.board.post.PostService;
 
 @SpringBootTest
 class BulletinBoardApplicationTests {
 
 	@Autowired
-	private PostRepository postRepository;
-	
-	@Autowired
-	private CommentRepository commentRepository;
-	
+	private PostService postService;
+
 	@Test
 	void testJpa() {
 //		Post p1 = new Post();
@@ -37,15 +35,21 @@ class BulletinBoardApplicationTests {
 //		p2.setCreateDate(LocalDateTime.now());
 //		this.postRepository.save(p2);
 		
-		Optional<Post> op = this.postRepository.findById(2);
-		assertTrue(op.isPresent());
-		Post p = op.get();
+//		Optional<Post> op = this.postRepository.findById(2);
+//		assertTrue(op.isPresent());
+//		Post p = op.get();
+//		
+//		Comment c = new Comment();
+//		c.setContent("1빠 답변");
+//		c.setPost(p);
+//		c.setCreateDate(LocalDateTime.now());
+//		this.commentRepository.save(c);
 		
-		Comment c = new Comment();
-		c.setContent("1빠 답변");
-		c.setPost(p);
-		c.setCreateDate(LocalDateTime.now());
-		this.commentRepository.save(c);
+		for (int i=1; i<=100; i++) {
+			String title = String.format("테스트 데이터 [%03d]", i);
+			String content = "내용 없음";
+			this.postService.create(title, content);
+		}
 	}
 
 }
