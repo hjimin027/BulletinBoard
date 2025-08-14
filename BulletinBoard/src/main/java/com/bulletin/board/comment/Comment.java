@@ -3,6 +3,7 @@ package com.bulletin.board.comment;
 import java.time.LocalDateTime;
 
 import com.bulletin.board.post.Post;
+import com.bulletin.board.user.SiteUser;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -28,4 +29,7 @@ public class Comment {
 	
 	@ManyToOne
 	private Post post;
+	
+	@ManyToOne
+	private SiteUser author;
 }

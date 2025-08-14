@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.time.LocalDateTime;
 
 import com.bulletin.board.DataNotFoundException;
+import com.bulletin.board.user.SiteUser;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,11 +37,12 @@ public class PostService {
         }
     }
 	
-	public void create(String title, String content) {
+	public void create(String title, String content, SiteUser user) {
         Post p = new Post();
         p.setTitle(title);
         p.setContent(content);
         p.setCreateDate(LocalDateTime.now());
+        p.setAuthor(user);
         this.postRepository.save(p);
     }
 }

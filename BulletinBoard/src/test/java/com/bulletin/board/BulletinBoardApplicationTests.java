@@ -45,11 +45,11 @@ class BulletinBoardApplicationTests {
 //		c.setCreateDate(LocalDateTime.now());
 //		this.commentRepository.save(c);
 		
-		for (int i=1; i<=100; i++) {
-			String title = String.format("테스트 데이터 [%03d]", i);
-			String content = "내용 없음";
-			this.postService.create(title, content);
-		}
+//		for (int i=1; i<=100; i++) {
+//			String title = String.format("테스트 데이터 [%03d]", i);
+//			String content = "내용 없음";
+//			this.postService.create(title, content);
+//		}
 	}
 
 }
