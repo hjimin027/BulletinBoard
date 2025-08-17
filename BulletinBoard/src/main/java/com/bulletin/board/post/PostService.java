@@ -45,4 +45,20 @@ public class PostService {
         p.setAuthor(user);
         this.postRepository.save(p);
     }
+	
+	public void modify(Post post, String title, String content) {
+        post.setTitle(title);
+        post.setContent(content);
+        post.setModifyDate(LocalDateTime.now());
+        this.postRepository.save(post);
+    }
+	
+	public void delete(Post post) {
+        this.postRepository.delete(post);
+    }
+	
+	public void vote(Post post, SiteUser siteUser) {
+        post.getVoter().add(siteUser);
+        this.postRepository.save(post);
+    }
 }
