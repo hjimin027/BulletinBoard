@@ -41,4 +41,6 @@ public class Post {
 	
 	@ManyToOne
 	private SiteUser author;
+	
+	private LocalDateTime modifyDate;
 }
