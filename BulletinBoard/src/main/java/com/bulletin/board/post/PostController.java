@@ -94,4 +94,13 @@ public class PostController {
         this.postService.delete(post);
         return "redirect:/";
     }
+	
+	@PreAuthorize("isAuthenticated()")
+    @GetMapping("/post/vote/{id}")
+    public String postVote(Principal principal, @PathVariable("id") Integer id) {
+        Post post = this.postService.getPost(id);
+        SiteUser siteUser = this.userService.getUser(principal.getName());
+        this.postService.vote(post, siteUser);
+        return String.format("redirect:/post/detail/%s", id);
+    }
 }

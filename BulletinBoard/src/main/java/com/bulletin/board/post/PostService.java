@@ -56,4 +56,9 @@ public class PostService {
 	public void delete(Post post) {
         this.postRepository.delete(post);
     }
+	
+	public void vote(Post post, SiteUser siteUser) {
+        post.getVoter().add(siteUser);
+        this.postRepository.save(post);
+    }
 }

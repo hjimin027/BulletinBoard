@@ -16,14 +16,19 @@
                 </div>
             </div>
 			<div class="my-3">
+				<a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
+					th:data-uri="@{|/post/vote/${post.id}|}">
+					추천
+					<span class="badge rounded-pill bg-success" th:text="${#lists.size(post.voter)}"></span>
+				</a>
 				<a th:href="@{|/post/modify/${post.id}|}" class="btn btn-sm btn-outline-secondary"
-				sec:authorize="isAuthenticated()"
-				th:if="${post.author != null and #authentication.getPrincipal().getUsername() == post.author.username}"
-				th:text="수정"></a>
+					sec:authorize="isAuthenticated()"
+					th:if="${post.author != null and #authentication.getPrincipal().getUsername() == post.author.username}"
+					th:text="수정"></a>
 				<a href="javascript:void(0);" th:data-uri="@{|/post/delete/${post.id}|}"
-				class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
-				th:if="${post.author != null and #authentication.getPrincipal().getUsername() == post.author.username}"
-				th:text="삭제"></a>
+					class="delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
+					th:if="${post.author != null and #authentication.getPrincipal().getUsername() == post.author.username}"
+					th:text="삭제"></a>
 			</div>
         </div>
     </div>
@@ -54,6 +59,15 @@ const delete_elements = document.getElementsByClassName("delete");
 Array.from(delete_elements).forEach(function(element) {
     element.addEventListener('click', function() {
         if(confirm("정말로 삭제하시겠습니까?")) {
+            location.href = this.dataset.uri;
+        };
+    });
+});
+
+const recommend_elements = document.getElementsByClassName("recommend");
+Array.from(recommend_elements).forEach(function(element) {
+    element.addEventListener('click', function() {
+        if(confirm("정말로 추천하시겠습니까?")) {
             location.href = this.dataset.uri;
         };
     });
