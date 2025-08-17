@@ -1,9 +1,11 @@
 package com.bulletin.board.comment;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.bulletin.board.DataNotFoundException;
 import com.bulletin.board.post.Post;
 import com.bulletin.board.user.SiteUser;
 
@@ -20,6 +22,24 @@ public class CommentService {
 		comment.setCreateDate(LocalDateTime.now());
 		comment.setPost(post);
 		comment.setAuthor(author);
+		this.commentRepository.save(comment);
+	}
+	
+	public void delete(Comment comment) {
+		this.commentRepository.delete(comment);
+	}
+
+	public Comment getComment(Integer id) {
+		Optional<Comment> comment = this.commentRepository.findById(id);
+		if (comment.isPresent()) {
+			return comment.get();
+		} else {
+			throw new DataNotFoundException("answer not found");
+		}
+	}
+	
+	public void vote(Comment comment, SiteUser siteUser) {
+		comment.getVoter().add(siteUser);
 		this.commentRepository.save(comment);
 	}
 }

@@ -25,6 +25,20 @@
 					<div th:text="${#temporals.format(comment.createDate, 'yyyy-MM-dd HH:mm')}"></div>
 				</div>
 			</div>
+			<div class="my-3">
+				<a href="javascript:void(0);" class="recommend btn btn-sm btn-outline-secondary"
+				th:data-uri="@{|/comment/vote/${comment.id}|}">
+					추천
+					<span class="badge rounded-pill bg-success"
+					th:text="${#lists.size(comment.voter)}"></span>
+				</a>
+				<!--원래 수정 있던 자리-->
+				<a href="javascript:void(0);" th:data-uri="@{|/comment/delete/${comment.id}|}"
+				class="delete btn btn-sm btn-outline-secondary"
+				sec:authorize="isAuthenticated()"
+				th:if="${comment.author != null and #authentication.getPrincipal().getUsername() == comment.author.username}"
+				th:text="삭제"></a>
+			</div>
 		</div>
 	</div>
 	<form th:action="@{|/comment/create/${post.id}|}" method="post">
@@ -35,4 +49,24 @@
 		<input type="submit" value="답변 등록" class="btn btn-primary my-2">
 	</form>
 </div>
+<script layout:fragment="script" type="text/javascript">
+	const delete_elements = document.getElementsByClassName("delete");
+	Array.from(delete_elements).forEach(function(element){
+		element.addEventListener('click', function(){
+			if(confirm("정말로 삭제하시겠습니까?")){
+				location.href = this.dataset.uri;
+			};
+		});
+	});
+	
+	const recommend_elements = document.getElementsByClassName("recommend");
+		Array.from(recommend_elements).forEach(function(element){
+			element.addEventListener('click', function(){
+				if(confirm("정말로 추천하시겠습니까?")){
+					location.href = this.dataset.uri;
+				};
+			});
+		});
+</script>
+
 </html>
