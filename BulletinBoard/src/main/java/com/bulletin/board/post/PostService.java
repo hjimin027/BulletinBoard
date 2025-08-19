@@ -14,6 +14,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.mysite.sbb.answer.Answer;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
+import org.springframework.data.jpa.domain.Specification;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -21,11 +30,30 @@ import lombok.RequiredArgsConstructor;
 public class PostService {
 	private final PostRepository postRepository;
 	
-	public Page<Post> getList(int page){
+	private Specification<Post> search(String kw) {
+        return new Specification<>() {
+            private static final long serialVersionUID = 1L;
+            @Override
+            public Predicate toPredicate(Root<Post> p, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                query.distinct(true);  
+                Join<Post, SiteUser> u1 = p.join("author", JoinType.LEFT);
+                Join<Post, Comment> a = p.join("commentList", JoinType.LEFT);
+                Join<Comment, SiteUser> u2 = a.join("author", JoinType.LEFT);
+                return cb.or(cb.like(p.get("title"), "%" + kw + "%"),
+                        cb.like(p.get("content"), "%" + kw + "%"),
+                        cb.like(u1.get("username"), "%" + kw + "%"),
+                        cb.like(a.get("content"), "%" + kw + "%"),
+                        cb.like(u2.get("username"), "%" + kw + "%"));
+            }
+        };
+    }
+	
+	public Page<Post> getList(int page, String kw){
 		List<Sort.Order> sorts = new ArrayList<>();
 		sorts.add(Sort.Order.desc("createDate"));
 		Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
-		return this.postRepository.findAll(pageable);
+		Specification<Post> spec = search(kw);
+		return this.postRepository.findAll(spec, pageable);
 	}
 	
 	public Post getPost(Integer id) {  
