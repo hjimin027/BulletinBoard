@@ -37,4 +37,7 @@ public class Comment {
 	
 	@ManyToMany
 	Set<SiteUser> voter;
+	
+	private String guestName;
+    private String guestPassword;
 }

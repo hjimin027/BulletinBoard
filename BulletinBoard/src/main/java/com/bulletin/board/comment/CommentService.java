@@ -25,6 +25,16 @@ public class CommentService {
 		this.commentRepository.save(comment);
 	}
 	
+	public void createAsGuest(Post post, String content, String guestName, String guestPassword) {
+	    Comment comment = new Comment();
+	    comment.setContent(content);
+	    comment.setCreateDate(LocalDateTime.now());
+	    comment.setPost(post);
+	    comment.setGuestName(guestName);
+	    comment.setGuestPassword(guestPassword);
+	    this.commentRepository.save(comment);
+	}
+	
 	public void delete(Comment comment) {
 		this.commentRepository.delete(comment);
 	}

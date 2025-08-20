@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.bulletin.board.post.Post;
 import com.bulletin.board.post.PostService;
@@ -30,6 +31,7 @@ public class CommentController {
 	private final PostService postService;
 	private final UserService userService;
 
+	// 로그인 사용자
 	@PreAuthorize("isAuthenticated()")
 	@PostMapping("/create/{id}")
 	public String createComment(Model model, @PathVariable("id") Integer id, 
@@ -44,6 +46,21 @@ public class CommentController {
 		return String.format("redirect:/post/detail/%s", id);
 	}
 	
+	//비로그인 사용자
+	@PostMapping("/createGuest/{id}")
+	public String createGuestComment(Model model, @PathVariable("id") Integer id,
+			@Valid CommentForm commentForm, BindingResult bindingResult) {
+	    Post post = this.postService.getPost(id);
+	    if (bindingResult.hasErrors() || commentForm.getGuestName() == null || commentForm.getGuestPassword() == null) {
+	        model.addAttribute("post", post);
+	        return "post_detail";
+	    }
+	    this.commentService.createAsGuest(post, commentForm.getContent(),
+	                                      commentForm.getGuestName(), commentForm.getGuestPassword());
+	    return String.format("redirect:/post/detail/%s", id);
+	}
+	
+	// 로그인 사용자
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/delete/{id}")
 	public String commentDelete(Principal principal, @PathVariable("id") Integer id) {
@@ -53,6 +70,21 @@ public class CommentController {
 		}
 		this.commentService.delete(comment);
 		return String.format("redirect:/post/detail/%s", comment.getPost().getId());
+	}
+	
+	//비로그인 사용자
+	@GetMapping("/deleteGuest/{id}")
+	public String deleteGuestComment(@PathVariable("id") Integer id, @RequestParam("password") String password, RedirectAttributes redirectAttributes) {
+	    Comment comment = this.commentService.getComment(id);
+	    if (comment.getAuthor() != null) {
+	        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "회원 댓글은 이 경로로 삭제 불가");
+	    }
+	    if (!comment.getGuestPassword().equals(password)) {
+	    	redirectAttributes.addAttribute("error", "password");
+	        return "redirect:/question/detail/" + answer.getQuestion().getId();
+	    }
+	    this.commentService.delete(comment);
+	    return String.format("redirect:/post/detail/%s", comment.getPost().getId());
 	}
 	
 	@PreAuthorize("isAuthenticated()")
