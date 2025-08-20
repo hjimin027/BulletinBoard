@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -81,7 +82,7 @@ public class CommentController {
 	    }
 	    if (!comment.getGuestPassword().equals(password)) {
 	    	redirectAttributes.addAttribute("error", "password");
-	        return "redirect:/question/detail/" + answer.getQuestion().getId();
+	        return "redirect:/question/detail/" + comment.getPost().getId();
 	    }
 	    this.commentService.delete(comment);
 	    return String.format("redirect:/post/detail/%s", comment.getPost().getId());

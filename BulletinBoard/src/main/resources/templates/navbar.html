@@ -16,6 +16,9 @@
 				<li class="nav-item">
 					<a class="nav-link" th:href="@{/user/signup}">회원가입</a>
 				</li>
+				<li>
+					<a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/user/menu}">메뉴</a>
+				</li>
 			</ul>
 		</div>
 	</div>

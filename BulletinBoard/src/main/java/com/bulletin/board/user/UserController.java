@@ -56,4 +56,13 @@ public class UserController {
         return "login_form";
     }
 
+    @GetMapping("/menu")
+    public String menu() {
+    	return "menu_main";
+    }
+    
+    @GetMapping("/menu/myinfo")
+    public String myInfo() {
+    	return "menu_myinfo";
+    }
 }

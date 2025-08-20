@@ -1,0 +1,18 @@
+<html layout:decorate="~{layout}">
+<div layout:fragment="content" class="container my-3">
+	<div>
+		마이페이지 메뉴
+		<ul>
+			<li>
+				<a th:href="@{/user/menu/myinfo}">내 정보</a>
+			</li>
+			<li>
+				<a th:href="@{/user/menu/mypost}">내 글</a>
+			</li>
+			<li>
+				<a th:href="@{/user/menu/bookmark}">스크랩</a>
+			</li>
+		</ul>
+	</div>
+</div>
+</html>
