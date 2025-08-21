@@ -82,7 +82,7 @@ public class CommentController {
 	    }
 	    if (!comment.getGuestPassword().equals(password)) {
 	    	redirectAttributes.addAttribute("error", "password");
-	        return "redirect:/question/detail/" + comment.getPost().getId();
+	        return "redirect:/post/detail/" + comment.getPost().getId();
 	    }
 	    this.commentService.delete(comment);
 	    return String.format("redirect:/post/detail/%s", comment.getPost().getId());
