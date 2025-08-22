@@ -76,17 +76,15 @@ public class CommentController {
 	//비로그인 사용자
 	@GetMapping("/deleteGuest/{id}")
 	public String deleteGuestComment(@PathVariable("id") Integer id, @RequestParam("password") String password, RedirectAttributes redirectAttributes) {
-	    Comment comment = this.commentService.getComment(id);
-	    if (comment.getAuthor() != null) {
-	        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "회원 댓글은 이 경로로 삭제 불가");
+		Integer postId = commentService.getComment(id).getPost().getId();
+		try {
+	        commentService.deleteGuestComment(id, password);
+	    } catch (IllegalArgumentException e) {
+	        redirectAttributes.addAttribute("error", "password");
 	    }
-	    if (!comment.getGuestPassword().equals(password)) {
-	    	redirectAttributes.addAttribute("error", "password");
-	        return "redirect:/question/detail/" + comment.getPost().getId();
-	    }
-	    this.commentService.delete(comment);
-	    return String.format("redirect:/post/detail/%s", comment.getPost().getId());
+	    return "redirect:/post/detail/" + postId;
 	}
+
 	
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/vote/{id}")

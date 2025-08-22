@@ -63,24 +63,24 @@
 			삭제
 			</a>
 			<!-- 비로그인 댓글 삭제 -->
-			<a th:attr="data-id=${answer.id}"
-			   onclick="deleteGuestAnswer(this.dataset.id)"
+			<a th:attr="data-id=${comment.id}"
+			   onclick="deleteGuestComment(this.dataset.id)"
 			   class="btn btn-sm btn-outline-secondary"
-			   th:if="${answer.author == null}">
+			   th:if="${comment.author == null}">
 			  삭제
 			</a>
 		</div>
 	</div>
 	<form th:action="@{|/comment/create/${post.id}|}" method="post" sec:authorize="isAuthenticated()">
 	    <textarea name="content" rows="10" class="form-control"></textarea>
-	    <input type="submit" value="답변 등록" class="btn btn-primary my-2">
+	    <input type="submit" value="완료" class="btn btn-primary my-2">
 	</form>
 
 	<form th:action="@{|/comment/createGuest/${post.id}|}" method="post" sec:authorize="isAnonymous()">
 	    <input type="text" name="guestName" placeholder="이름" class="form-control my-1" required>
 	    <input type="password" name="guestPassword" placeholder="비밀번호" class="form-control my-1" required>
 	    <textarea name="content" rows="10" class="form-control"></textarea>
-	    <input type="submit" value="답변 등록" class="btn btn-primary my-2">
+	    <input type="submit" value="완료" class="btn btn-primary my-2">
 	</form>
 </div>
 <script layout:fragment="script" type="text/javascript">
