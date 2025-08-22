@@ -16,6 +16,8 @@ import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 @Getter
 @Setter
 @Entity
@@ -40,4 +42,12 @@ public class Comment {
 	
 	private String guestName;
     private String guestPassword;
+    
+    public void setGuestPassword(String rawPassword, PasswordEncoder passwordEncoder) {
+        this.guestPassword = passwordEncoder.encode(rawPassword);
+    }
+
+    public boolean checkPassword(String rawPassword, PasswordEncoder passwordEncoder) {
+        return passwordEncoder.matches(rawPassword, this.guestPassword);
+    }
 }
