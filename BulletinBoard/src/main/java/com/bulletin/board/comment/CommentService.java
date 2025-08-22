@@ -9,7 +9,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.bulletin.board.DataNotFoundException;
 import com.bulletin.board.post.Post;
 import com.bulletin.board.user.SiteUser;
-import com.example.demo.answer.Answer;
 
 import lombok.RequiredArgsConstructor;
 

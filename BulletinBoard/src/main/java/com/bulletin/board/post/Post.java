@@ -35,9 +35,6 @@ public class Post {
 	
 	private LocalDateTime createDate;
 	
-	@Column(columnDefinition = "integer default 0", nullable = false)
-	private int view;
-	
 	@OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
 	private List<Comment> commentList;
 	
