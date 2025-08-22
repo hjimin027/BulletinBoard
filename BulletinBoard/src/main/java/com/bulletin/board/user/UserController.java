@@ -3,10 +3,14 @@ package com.bulletin.board.user;
 import jakarta.validation.Valid;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.security.Principal;
+
 import org.springframework.dao.DataIntegrityViolationException;
 
 import lombok.RequiredArgsConstructor;
@@ -62,7 +66,16 @@ public class UserController {
     }
     
     @GetMapping("/menu/myinfo")
-    public String myInfo() {
+    public String myInfo(Model model, Principal principal) {
+    	String username = principal.getName();
+    	SiteUser user = userService.getUser(username);
+    	model.addAttribute("username", user.getUsername());
+    	model.addAttribute("email", user.getEmail());
     	return "menu_myinfo";
+    }
+    
+    @GetMapping("/menu/bookmark")
+    public String bookmark() {
+    	return "bookmark";
     }
 }

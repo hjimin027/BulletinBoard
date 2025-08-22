@@ -1,0 +1,13 @@
+<html layout:decorate="~{layout}">
+<div layout:fragment="content" class="container my-3">
+	<p>
+		사용자: <span th:text="${username}"></span>
+	</p>
+	<p>
+		사용자메일: <span th:text="${email}"></span>
+	</p>
+	<p>
+		<button class="btn btn-primary" onclick="window.open()">비밀번호 변경</button>
+	</p>
+</div>
+</html>

@@ -89,4 +89,8 @@ public class PostService {
         post.getVoter().add(siteUser);
         this.postRepository.save(post);
     }
+	
+	public List<Post> getPostsByUser(String username){
+		return this.postRepository.findByAuthor_Username(username);
+	}
 }

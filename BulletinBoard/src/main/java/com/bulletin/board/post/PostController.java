@@ -104,4 +104,16 @@ public class PostController {
         this.postService.vote(post, siteUser);
         return String.format("redirect:/post/detail/%s", id);
     }
+	
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/menu/mypost")
+	public String myPost(Model model, Principal principal) {
+		String username = principal.getName();
+		
+		// TODO: 여기 지우기 - 사용자 로그 확인
+		System.out.println("현재 사용자 이름: " + username);
+		
+		model.addAttribute("myPostList", postService.getPostsByUser(username));
+		return "menu_mypost";
+	}
 }

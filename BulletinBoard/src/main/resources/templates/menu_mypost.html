@@ -1,0 +1,25 @@
+<html layout:decorate="~{layout}">
+<div layout:fragment="content" class="container my-3">
+    <h2>내 글 모아보기</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>번호</th>
+                <th>제목</th>
+                <th>작성일</th>
+                <th>상세보기</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="post, stat : ${myPostList}">
+                <td th:text="${stat.count}"></td>
+                <td th:text="${post.title}"></td>
+                <td th:text="${#temporals.format(post.createDate, 'yyyy-MM-dd HH:mm')}"></td>
+                <td>
+                    <a th:href="@{'/post/detail/' + ${post.id}}" class="btn btn-primary btn-sm">상세보기</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</html>
