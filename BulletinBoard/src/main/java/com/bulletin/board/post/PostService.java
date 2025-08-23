@@ -96,4 +96,8 @@ public class PostService {
 	public List<Post> getPostsByUser(String username){
 		return this.postRepository.findByAuthor_Username(username);
 	}
+	
+	public List<Post> getBestPosts() {
+        return postRepository.findBestPosts();
+    }
 }

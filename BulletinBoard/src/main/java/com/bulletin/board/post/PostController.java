@@ -2,6 +2,8 @@ package com.bulletin.board.post;
 
 import java.security.Principal;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -115,5 +117,12 @@ public class PostController {
 		
 		model.addAttribute("myPostList", postService.getPostsByUser(username));
 		return "menu_mypost";
+	}
+	
+	@GetMapping("/post/best")
+	public String bestPosts(Model model) {
+		List<Post> bestList = postService.getBestPosts();
+		model.addAttribute("postList", bestList);
+        return "post_best";
 	}
 }
