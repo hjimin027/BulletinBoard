@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class CommentService {
 	private final CommentRepository commentRepository;
+	private final PasswordEncoder passwordEncoder;
 	
 	public void create(Post post, String content, SiteUser author) {
 		Comment comment = new Comment();
