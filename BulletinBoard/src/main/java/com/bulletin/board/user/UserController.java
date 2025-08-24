@@ -73,9 +73,4 @@ public class UserController {
     	model.addAttribute("email", user.getEmail());
     	return "menu_myinfo";
     }
-    
-    @GetMapping("/menu/bookmark")
-    public String bookmark() {
-    	return "bookmark";
-    }
 }

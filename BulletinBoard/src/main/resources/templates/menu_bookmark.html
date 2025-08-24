@@ -1,4 +1,24 @@
 <html layout:decorate="~{layout}">
 <div layout:fragment="content" class="container my-3">
+	<h2>북마크</h2>
+	
+	<!--빈 목록인 경우-->
+	<div th:if="${#lists.isEmpty(bookmarks)}" class="text-center">
+		<p>아직 북마크한 게시글이 없습니다.</p>
+	</div>
+	
+	<!--북마크 목록-->
+	<div th:if="${!#lists.isEmpty(bookmarks)}">
+		<div th:each="bookmark: ${bookmarks}">
+			<div>
+				<div>
+					<p>
+						<a th:href="@{/post/detail/{id}(id=${bookmark.post.id})}"
+						th:text="${bookmark.post.title}"></a>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 </html>
