@@ -8,7 +8,10 @@
 		사용자메일: <span th:text="${email}"></span>
 	</p>
 	<p>
-		<button class="btn btn-primary" onclick="window.open()">비밀번호 변경</button>
+		<button type="button"
+		        onclick="window.open('/user/password','pwChange','width=480,height=560,menubar=no,toolbar=no,location=no,status=no,resizable=no,scrollbars=yes')">
+		  비밀번호 변경
+		</button>
 	</p>
 </div>
 </html>

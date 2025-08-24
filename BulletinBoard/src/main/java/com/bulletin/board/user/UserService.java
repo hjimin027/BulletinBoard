@@ -33,6 +33,19 @@ public class UserService {
     		throw new DataNotFoundException("siteuser not found");
     	}
     }
+
+	public void changePassword(String username, String currentPassword, String newPassword) {
+		SiteUser user = userRepository.findByusername(username)
+				.orElseThrow(() -> new IllegalStateException("사용자를 찾을 수 없습니다."));
+		
+		//현재 비밀번호 확인
+		if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+			throw new IllegalArgumentException("비밀번호가 올바르지 않습니다.");
+		}
+		
+		user.setPassword(passwordEncoder.encode(newPassword));
+		this.userRepository.save(user);
+	}
     
     
 }

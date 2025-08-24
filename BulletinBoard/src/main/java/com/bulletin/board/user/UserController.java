@@ -6,12 +6,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.Principal;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import lombok.RequiredArgsConstructor;
 
@@ -72,5 +74,45 @@ public class UserController {
     	model.addAttribute("username", user.getUsername());
     	model.addAttribute("email", user.getEmail());
     	return "menu_myinfo";
+    }
+    
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/password")
+    public String passwordForm(Model model) {
+    	model.addAttribute("form", new PasswordChangeForm());
+    	return "menu_password";
+    }
+    
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/password")
+    public String changePassword(@Valid @ModelAttribute("form") PasswordChangeForm form,
+    		BindingResult bindingResult, Principal principal, Model model) {
+    	//새 비밀번호 확인
+    	if (!form.getNewPassword().equals(form.getNewPasswordConfirm())) {
+    		bindingResult.rejectValue("newPasswordConfirm", "password.mismatch", "새 비밀번호와 일치하지 않습니다.");
+        	return "menu_password";
+    	}
+    	//현재 비밀번호와 새 비밀번호 동일 여부
+    	if (form.getCurrentPassword().equals(form.getNewPassword())) {
+    		bindingResult.rejectValue("newPassword", "password.same", "입력하신 현재 비밀번호와 동일한 비밀번호는 사용할 수 없습니다.");
+    		return "menu_password";
+    	}
+    	
+    	//에러
+    	if (bindingResult.hasErrors()) { return "menu_password"; }
+    	
+    	try {
+    		userService.changePassword(principal.getName(), form.getCurrentPassword(), form.getNewPassword());
+    	} catch (IllegalArgumentException e) {
+    		bindingResult.reject("currentPasswordInvalid", "현재 비밀번호가 올바르지 않습니다.");
+    		return "menu_password";
+    	} catch (Exception e) {
+    		bindingResult.reject("passwordChangeFailed", "비밀번호 변경 중 오류가 발생했습니다.");
+    		return "menu_password";
+    	}
+    	
+    	//성공
+    	model.addAttribute("success", true);
+    	return "menu_password";
     }
 }
